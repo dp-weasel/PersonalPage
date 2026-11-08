@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Weasel Shiro</title>
+  <meta name="description" content="Mensajes de Guild Wars 2 listos para copiar con un clic.">
+  <meta name="color-scheme" content="dark light">
+  <script>
+    // Aplica el tema guardado antes de pintar para evitar el parpadeo.
+    try {
+      const t = localStorage.getItem("theme");
+      if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+    } catch (_) {}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Cambiar a modo claro">
+    <span aria-hidden="true" class="icon-sun">☀</span>
+    <span aria-hidden="true" class="icon-moon">☾</span>
+  </button>
+
+  <header class="hero">
+    <h1>Weasel Shiro</h1>
+    <p class="subtitle">Haz clic en un mensaje para copiarlo y pégalo en el chat de GW2.</p>
+  </header>
+
+  <main>
+    <nav id="tabs" class="tabs" role="tablist" aria-label="Categorías"></nav>
+    <section id="panels"></section>
+    <p id="status" class="status" hidden></p>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

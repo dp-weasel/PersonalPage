@@ -1,0 +1,179 @@
+:root {
+  --charcoal: #212121;
+  --vermilion: #e64a19;
+  --amber: #ff9103;
+  --snow: #f2f2f2;
+}
+
+/* Modo oscuro (predeterminado) */
+:root,
+:root[data-theme="dark"] {
+  --bg: var(--charcoal);
+  --surface: #2b2b2b;
+  --surface-hover: #333;
+  --border: #3d3d3d;
+  --text: var(--snow);
+  --muted: #b5b5b5;
+  --accent: var(--amber);
+  --accent-strong: var(--vermilion);
+  --on-accent: var(--charcoal);
+}
+
+/* Modo claro: el naranja intenso sobre fondo claro tiene poco contraste,
+   así que el acento principal pasa a ser el bermellón. */
+:root[data-theme="light"] {
+  --bg: var(--snow);
+  --surface: #ffffff;
+  --surface-hover: #fff4ec;
+  --border: #dedede;
+  --text: var(--charcoal);
+  --muted: #5c5c5c;
+  --accent: #c43e12;
+  --accent-strong: var(--vermilion);
+  --on-accent: #ffffff;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", system-ui, sans-serif;
+  line-height: 1.5;
+  transition: background-color .2s, color .2s;
+}
+
+/* Encabezado */
+.hero {
+  text-align: center;
+  padding: 4.5rem 1rem 2rem;
+}
+.hero h1 {
+  margin: 0;
+  font-family: "Archivo Black", "Arial Black", sans-serif;
+  font-weight: 400; /* Archivo Black ya es una fuente "black"; pedir 900 provoca negrita sintética */
+  font-size: clamp(2.75rem, 11vw, 6rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  background: linear-gradient(90deg, var(--accent-strong), var(--amber));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.subtitle { color: var(--muted); margin: 1rem 0 0; }
+
+main {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 0 1rem 4rem;
+}
+
+/* Pestañas */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .5rem;
+  margin-bottom: 1.5rem;
+}
+.tab {
+  font: 600 .95rem "Inter", system-ui, sans-serif;
+  padding: .55rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: background-color .15s, border-color .15s, color .15s;
+}
+.tab:hover { border-color: var(--accent); }
+.tab[aria-selected="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
+/* Mensajes */
+.messages {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: .75rem;
+}
+.message {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent-strong);
+  border-radius: .5rem;
+  padding: 1rem 1.1rem;
+  cursor: pointer;
+  transition: background-color .15s, transform .1s, border-color .15s;
+}
+.message:hover { background: var(--surface-hover); border-color: var(--accent); border-left-color: var(--accent); }
+.message:active { transform: scale(.99); }
+.message .text { flex: 1; overflow-wrap: anywhere; }
+.message .meta {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: .25rem;
+  font-size: .8rem;
+  color: var(--muted);
+}
+.message .copy-label { font-weight: 600; color: var(--accent); }
+.message.copied { border-left-color: var(--amber); }
+.message .count.over { color: var(--vermilion); font-weight: 600; }
+
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+
+.status { text-align: center; color: var(--muted); }
+
+/* Botón de tema */
+.theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--accent);
+  font-size: 1.25rem;
+  cursor: pointer;
+  z-index: 10;
+}
+:root[data-theme="dark"] .icon-moon,
+:root[data-theme="light"] .icon-sun { display: none; }
+
+/* Aviso de copiado */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 1.5rem;
+  transform: translate(-50%, 1rem);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+  padding: .6rem 1.1rem;
+  border-radius: 999px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s, transform .2s;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
