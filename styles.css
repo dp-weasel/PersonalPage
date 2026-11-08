@@ -70,84 +70,93 @@ main {
   padding: 0 1rem 4rem;
 }
 
-/* Ícono: armiño (Mustela erminea) blanco hecho solo con CSS */
+/* Ícono: cara de armiño (Mustela erminea) blanco hecha solo con CSS */
 .stoat-badge {
   --size: 7.5rem;
   width: var(--size);
   height: var(--size);
   margin: 0 auto 1.25rem;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--vermilion, #e64a19), var(--amber, #ff9103));
+  background: linear-gradient(135deg, var(--vermilion), var(--amber));
   box-shadow: 0 .5rem 1.5rem rgb(230 74 25 / .35);
   display: grid;
   place-items: center;
-  overflow: hidden;
 }
-/* Todas las medidas en em: cambiando font-size se escala el dibujo completo. */
+/* Medidas en em: cambiando --size se escala todo el dibujo. */
 .stoat {
   position: relative;
   font-size: calc(var(--size) / 12);
-  width: 10em;
-  height: 6em;
-  margin-top: .3em;
+  width: 8em;
+  height: 7em;
+  margin-top: -.6em;
 }
-.stoat > * { position: absolute; background: #fff; }
+.stoat > * { position: absolute; }
 
-.stoat .tail {
-  left: .1em; top: 2.55em;
-  width: 3.1em; height: .62em;
-  border-radius: .35em;
-  transform: rotate(-18deg);
-  transform-origin: right center;
-  /* Punta negra característica del armiño */
-  background: linear-gradient(90deg, #1a1a1a 0 34%, #fff 34%);
-}
-.stoat .body {
-  left: 2.3em; top: 2.35em;
-  width: 5.6em; height: 1.75em;
-  /* Lomo arqueado: más curva arriba que abajo */
-  border-radius: 2.2em 1.6em .9em 1.1em / 1.5em 1.2em .6em .6em;
-}
-.stoat .leg {
-  top: 3.45em;
-  width: .72em; height: 1.2em;
-  border-radius: .36em .36em .3em .3em;
-}
-.stoat .leg.back  { left: 2.85em; }
-.stoat .leg.front { left: 6.6em; }
-.stoat .neck {
-  left: 6.4em; top: 1.75em;
-  width: 1.7em; height: 1.6em;
-  border-radius: 50%;
-}
-.stoat .head {
-  left: 7em; top: 1.05em;
-  width: 2.2em; height: 1.6em;
-  border-radius: 55% 45% 40% 55%;
-}
-.stoat .snout {
-  left: 8.5em; top: 1.6em;
-  width: 1.35em; height: .85em;
-  border-radius: 30% 70% 60% 40%;
-}
+/* Orejas: pequeñas, redondas y a los lados, con el interior rosado */
 .stoat .ear {
-  left: 7.05em; top: .7em;
-  width: .85em; height: .85em;
+  top: 1.45em;
+  width: 1.8em; height: 1.8em;
   border-radius: 50%;
-  box-shadow: inset 0 0 0 .2em #fff, inset 0 0 0 1em #f6c1b3;
+  background: #f6c1b3;
+  box-shadow: inset 0 0 0 .4em #fff;
 }
+.stoat .ear.left  { left: .75em; }
+.stoat .ear.right { right: .75em; }
+
+/* Cabeza: un cuadrado redondeado girado 45° y aplastado da una cara ancha
+   arriba que termina en un hocico en punta. */
+.stoat .head {
+  left: 1.5em; top: 1.5em;
+  width: 5em; height: 5em;
+  background: #fff;
+  border-radius: 55% 40% 28% 40%;
+  transform: scaleY(.82) rotate(45deg);
+}
+
 .stoat .eye {
-  left: 8.3em; top: 1.45em;
-  width: .34em; height: .34em;
+  top: 3.2em;
+  width: .72em; height: .78em;
   border-radius: 50%;
   background: #1a1a1a;
 }
+.stoat .eye::after { /* brillo */
+  content: "";
+  position: absolute;
+  top: .14em; right: .12em;
+  width: .22em; height: .22em;
+  border-radius: 50%;
+  background: #fff;
+}
+.stoat .eye.left  { left: 2.5em; }
+.stoat .eye.right { right: 2.5em; }
+
 .stoat .nose {
-  left: 9.62em; top: 1.72em;
-  width: .34em; height: .3em;
-  border-radius: 50%;
+  left: 50%; top: 5.05em;
+  width: .8em; height: .55em;
+  transform: translateX(-50%);
   background: #1a1a1a;
+  border-radius: 45% 45% 50% 50% / 40% 40% 60% 60%;
 }
+
+/* Sonrisa "ω": dos arcos que se tocan bajo la nariz */
+.stoat .mouth {
+  left: 50%; top: 5.5em;
+  width: 1.4em; height: .55em;
+  transform: translateX(-50%);
+}
+.stoat .mouth::before,
+.stoat .mouth::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: .7em; height: .55em;
+  border: .14em solid #1a1a1a;
+  border-top: 0;
+  border-radius: 0 0 .4em .4em;
+  box-sizing: border-box;
+}
+.stoat .mouth::before { left: 0; }
+.stoat .mouth::after  { right: 0; }
 
 /* Pestañas */
 .tabs {
