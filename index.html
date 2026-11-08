@@ -32,7 +32,13 @@
   <main>
     <nav id="tabs" class="tabs" role="tablist" aria-label="Categorías"></nav>
     <section id="panels"></section>
-    <p id="status" class="status" hidden></p>
+    <div id="status" class="status" hidden>
+      <p id="status-text"></p>
+      <label id="file-picker" class="file-picker" hidden>
+        Elegir messages.json
+        <input id="file-input" type="file" accept=".json,application/json">
+      </label>
+    </div>
   </main>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>

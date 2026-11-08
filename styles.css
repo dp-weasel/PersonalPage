@@ -138,6 +138,18 @@ main {
 :focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
 
 .status { text-align: center; color: var(--muted); }
+.file-picker {
+  display: inline-block;
+  margin-top: .5rem;
+  padding: .55rem 1.1rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+  cursor: pointer;
+}
+.file-picker[hidden] { display: none; }
+.file-picker input { position: absolute; width: 1px; height: 1px; opacity: 0; }
 
 /* Botón de tema */
 .theme-toggle {

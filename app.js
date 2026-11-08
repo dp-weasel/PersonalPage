@@ -5,6 +5,9 @@ const root = document.documentElement;
 const tabsEl = document.getElementById("tabs");
 const panelsEl = document.getElementById("panels");
 const statusEl = document.getElementById("status");
+const statusText = document.getElementById("status-text");
+const filePicker = document.getElementById("file-picker");
+const fileInput = document.getElementById("file-input");
 const toastEl = document.getElementById("toast");
 const themeBtn = document.getElementById("theme-toggle");
 
@@ -102,12 +105,21 @@ function selectTab(id, { focus = false, updateHash = true } = {}) {
   if (updateHash) history.replaceState(null, "", `#${id}`);
 }
 
+function showStatus(text, { picker = false } = {}) {
+  statusText.textContent = text;
+  filePicker.hidden = !picker;
+  statusEl.hidden = false;
+}
+
 function render(data) {
+  statusEl.hidden = true;
+  tabsEl.replaceChildren();
+  panelsEl.replaceChildren();
+
   // Cada clave del JSON es una pestaña; su valor, la lista de mensajes.
   const categories = Object.entries(data).filter(([, msgs]) => Array.isArray(msgs));
   if (categories.length === 0) {
-    statusEl.textContent = "No hay mensajes en messages.json.";
-    statusEl.hidden = false;
+    showStatus("No hay mensajes en messages.json.");
     return;
   }
 
@@ -159,6 +171,25 @@ function render(data) {
   selectTab(ids.includes(fromHash) ? fromHash : ids[0], { updateHash: ids.includes(fromHash) });
 }
 
+/* ---------- Carga de datos ---------- */
+
+// Respaldo para cuando la página se abre desde disco (file://): el navegador
+// bloquea fetch, así que se permite elegir o arrastrar el archivo JSON.
+async function loadFromFile(file) {
+  try {
+    render(JSON.parse(await file.text()));
+  } catch (err) {
+    showStatus(`El archivo no es un JSON válido (${err.message}).`, { picker: true });
+  }
+}
+fileInput.addEventListener("change", () => fileInput.files[0] && loadFromFile(fileInput.files[0]));
+document.addEventListener("dragover", (e) => e.preventDefault());
+document.addEventListener("drop", (e) => {
+  e.preventDefault();
+  const file = e.dataTransfer.files[0];
+  if (file) loadFromFile(file);
+});
+
 fetch("messages.json", { cache: "no-cache" })
   .then((r) => {
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
@@ -166,7 +197,16 @@ fetch("messages.json", { cache: "no-cache" })
   })
   .then(render)
   .catch((err) => {
-    statusEl.textContent = `No se pudo cargar messages.json (${err.message}).`;
-    statusEl.hidden = false;
     console.error(err);
+    if (location.protocol === "file:") {
+      showStatus(
+        "Abriste la página desde el disco y el navegador no permite leer messages.json así. " +
+        "Elige el archivo (o arrástralo aquí), o sirve la carpeta con: python3 -m http.server 8000",
+        { picker: true },
+      );
+    } else if (err instanceof SyntaxError) {
+      showStatus(`messages.json tiene un error de formato: ${err.message}`);
+    } else {
+      showStatus(`No se pudo cargar messages.json (${err.message}).`);
+    }
   });
